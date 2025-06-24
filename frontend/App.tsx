@@ -1,6 +1,11 @@
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 // Internal Components
-import { CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Header } from "@/components/Header";
+import { WalletDetails } from "@/components/WalletDetails";
+import { NetworkInfo } from "@/components/NetworkInfo";
+import { AccountInfo } from "@/components/AccountInfo";
+import { TopBanner } from "@/components/TopBanner";
 import { useContextTemplate } from "./context/ContextTemplate";
 import background from "./assets/image.svg";
 import aptos from "./assets/aptos.png";

@@ -1,5 +1,5 @@
 import { AptosSignMessageInput, AptosSignMessageOutput } from "@aptos-labs/wallet-adapter-react";
-import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { sha256 } from "@noble/hashes/sha2";
 import { bytesToHex, utf8ToBytes } from "@noble/hashes/utils";
