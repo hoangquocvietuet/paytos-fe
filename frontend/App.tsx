@@ -5,8 +5,6 @@ import { Header } from "@/components/Header";
 import { WalletDetails } from "@/components/WalletDetails";
 import { NetworkInfo } from "@/components/NetworkInfo";
 import { AccountInfo } from "@/components/AccountInfo";
-import { TransferAPT } from "@/components/TransferAPT";
-import { MessageBoard } from "@/components/MessageBoard";
 import { TopBanner } from "@/components/TopBanner";
 import { useContextTemplate } from "./context/ContextTemplate";
 import { QRCode } from "./components/QRCode";
