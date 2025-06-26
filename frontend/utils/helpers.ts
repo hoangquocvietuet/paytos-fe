@@ -1,5 +1,6 @@
-import { Network } from "@aptos-labs/ts-sdk";
+import { Network, PublicKey, Serializer } from "@aptos-labs/ts-sdk";
 import { NetworkInfo, isAptosNetwork } from "@aptos-labs/wallet-adapter-react";
+import { bytesToHex } from "@noble/hashes/utils";
 
 export const isValidNetworkName = (network: NetworkInfo | null) => {
   if (isAptosNetwork(network)) {
@@ -8,4 +9,12 @@ export const isValidNetworkName = (network: NetworkInfo | null) => {
   // If the configured network is not an Aptos network, i.e is a custom network
   // we resolve it as a valid network name
   return true;
+};
+
+export const getPublicKeyHex = (publicKey: PublicKey) => {
+  const serializerPublicKey = new Serializer();
+  serializerPublicKey.serialize(publicKey);
+  const publicKeyBytes = serializerPublicKey.toUint8Array();
+  const publicKeyHex = bytesToHex(publicKeyBytes);
+  return publicKeyHex;
 };
