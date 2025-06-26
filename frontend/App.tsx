@@ -7,63 +7,104 @@ import { NetworkInfo } from "@/components/NetworkInfo";
 import { AccountInfo } from "@/components/AccountInfo";
 import { TopBanner } from "@/components/TopBanner";
 import { useContextTemplate } from "./context/ContextTemplate";
-import background from "./assets/image.svg";
-import aptos from "./assets/aptos.png";
-import { Button } from "./components/ui/button";
-import { MoveRight } from "lucide-react";
-import { WalletSelector } from "./components/WalletSelector";
-import { Link } from "react-router-dom";
+import { QRCode } from "./components/QRCode";
+import { v4 as uuidv4 } from "uuid";
+import { useEffect, useState } from "react";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
-	const { connected, isLoading } = useWallet();
+  const { connected, signMessage, account } = useWallet();
+  const {
+    metaViewPublicKey,
+    metaViewPrivateKey,
+    metaSpendPublicKey,
+    metaSpendPrivateKey,
+    setKeys,
+    setUsername,
+    username,
+    setUsernameByPublicKey,
+    firstTimeSignature,
+    firstTimeMessage,
+    firstTimeSignMessage,
+  } = useContextTemplate();
 
-	return (
-		<>
-			{/* <Header /> */}
-			<div className="relative bg-[#1F2427] w-full h-screen pt-10">
-				{isLoading ? (
-					<div className="flex items-center justify-center h-full">
-						<div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
-					</div>
-				) : connected ? (
-					<>
-						<img
-							src={background}
-							alt="background"
-							className="min-w-full min-h-screen max-h-screen absolute top-0 left-0 bg-transparent p-4 z-1"
-						/>
-						<img
-							src={aptos}
-							alt="Aptos Coin"
-							className="absolute z-20 left-1/2 -translate-x-1/2 bottom-4 animate-bounce-subtle"
-						/>
-						<div className="relative flex flex-col items-center text-white text-center z-10 h-full">
-							<h2 className="text-4xl font-bold mb-4">
-								<span className="text-gradient">Privacy Payment</span> in crypto
-							</h2>
-							<h2 className="text-6xl font-bold">
-								<span className="text-gradient">Stealth Address</span> &{" "}
-								<span className="text-gradient">Bank</span>
-							</h2>
-							<h1 className="text-[256px] font-bold text-gradient tracking-widest -mt-10">
-								PAYTOS
-							</h1>
-						</div>
-						<Link to="/wallet" className="z-50">
-							<Button className="absolute bottom-5 z-50 left-1/2 -translate-x-1/2 flex items-center gap-2 text-black bg-white text-3xl font-bold p-8 rounded-full hover:bg-white/80">
-								Explore now
-								<MoveRight className="w-10 h-10" />
-							</Button>
-						</Link>
-					</>
-				) : (
-					<CardHeader>
-						<WalletSelector />
-					</CardHeader>
-				)}
-			</div>
-		</>
-	);
+  const [usernameInput, setUsernameInput] = useState("");
+
+  useEffect(() => {
+    if (connected && account && firstTimeSignature && firstTimeMessage) {
+      setUsernameByPublicKey();
+    }
+  }, [connected, account, firstTimeSignature, firstTimeMessage]);
+
+  const handleSetUsername = async () => {
+    if (!usernameInput) {
+      return;
+    }
+    const res = await fetch(`${API_URL}/users`, {
+      method: "POST",
+      body: JSON.stringify({
+        username: usernameInput,
+        publicKeyHex: account?.publicKey.toString(),
+        signatureHex: firstTimeSignature,
+        messageHex: firstTimeMessage,
+      }),
+    });
+    const data = await res.json();
+    console.log(data);
+    setUsername(usernameInput);
+  };
+
+  const handleFirstTimeSignMessage = async () => {
+    await firstTimeSignMessage();
+  };
+
+  return (
+    <>
+      <TopBanner />
+      <Header />
+      <div className="flex items-center justify-center flex-col">
+        {connected ? (
+          firstTimeSignature && firstTimeMessage ? (
+            <Card>
+              <CardContent className="flex flex-col gap-10 pt-6">
+                {username ? (
+                  <p>Welcome {username}</p>
+                ) : (
+                  <div>
+                    <p>Please choose a username</p>
+                    <input
+                      type="text"
+                      placeholder="Username"
+                      onChange={(e) => setUsernameInput(e.target.value)}
+                      value={usernameInput || ""}
+                    />
+                    <button onClick={handleSetUsername}>Set Username</button>
+                  </div>
+                )}
+                <WalletDetails />
+                <NetworkInfo />
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardContent className="flex flex-col gap-10 pt-6">
+                <p>Please sign message to continue</p>
+                <button onClick={handleFirstTimeSignMessage}>Sign Message</button>
+                <WalletDetails />
+                <NetworkInfo />
+                <AccountInfo />
+              </CardContent>
+            </Card>
+          )
+        ) : (
+          <CardHeader>
+            <CardTitle>To get started Connect a wallet</CardTitle>
+          </CardHeader>
+        )}
+      </div>
+    </>
+  );
 }
 
 export default App;

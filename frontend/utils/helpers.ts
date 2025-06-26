@@ -1,5 +1,6 @@
-import { Network } from "@aptos-labs/ts-sdk";
+import { Network, PublicKey, Serializer } from "@aptos-labs/ts-sdk";
 import { NetworkInfo, isAptosNetwork } from "@aptos-labs/wallet-adapter-react";
+import { bytesToHex } from "@noble/hashes/utils";
 
 export const isValidNetworkName = (network: NetworkInfo | null) => {
 	if (isAptosNetwork(network)) {
@@ -12,4 +13,12 @@ export const isValidNetworkName = (network: NetworkInfo | null) => {
 
 export const beautifyAddress = (addr: string) => {
 	return `${addr.slice(0, 5)}...${addr.slice(addr.length - 5, addr.length)}`;
+};
+
+export const getPublicKeyHex = (publicKey: PublicKey) => {
+  const serializerPublicKey = new Serializer();
+  serializerPublicKey.serialize(publicKey);
+  const publicKeyBytes = serializerPublicKey.toUint8Array();
+  const publicKeyHex = bytesToHex(publicKeyBytes);
+  return publicKeyHex;
 };
