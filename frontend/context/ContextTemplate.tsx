@@ -16,7 +16,7 @@ interface ContextTemplateContextType {
   metaViewPrivateKey: string | null;
   metaSpendPrivateKey: string | null;
   metaSpendPublicKey: string | null;
-  setKeys: () => void;
+  setKeys: () => Promise<void>;
   username: string | null;
   setUsername: (username: string) => void;
   setUsernameByPublicKey: () => void;
@@ -102,6 +102,7 @@ export const ContextTemplateProvider = ({ children }: ContextTemplateProviderPro
     }
     const publicKeyHex = getPublicKeyHex(account.publicKey);
     const messageHex = bytesToHex(utf8ToBytes(firstTimeMessage));
+
     try {
       const res = await fetch(`${API_URL}/users/public-key/${account.publicKey.toString()}`, {
         method: "POST",
@@ -109,7 +110,6 @@ export const ContextTemplateProvider = ({ children }: ContextTemplateProviderPro
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          publicKey: account.publicKey.toString(),
           publicKeyHex: publicKeyHex,
           signatureHex: signatureHex,
           messageHex: messageHex,
