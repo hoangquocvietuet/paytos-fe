@@ -68,6 +68,8 @@ function App() {
           publicKeyHex: account?.publicKey.toString(),
           signatureHex: firstTimeSignature,
           messageHex: bytesToHex(utf8ToBytes(firstTimeMessage)),
+          viewPublicKey: metaViewPublicKey,
+          viewPrivateKey: metaViewPrivateKey,
         }),
       });
       const data = await res.json();
