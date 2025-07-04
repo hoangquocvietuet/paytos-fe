@@ -1,9 +1,8 @@
-import { AptosSignMessageInput, AptosSignMessageOutput } from "@aptos-labs/wallet-adapter-react";
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { sha256 } from "@noble/hashes/sha2";
 import { bytesToHex, utf8ToBytes } from "@noble/hashes/utils";
-import { Account, AptosConfig, Deserializer, Network, Secp256k1PrivateKey, Serializer } from "@aptos-labs/ts-sdk";
+import { Account, Secp256k1PrivateKey, Serializer } from "@aptos-labs/ts-sdk";
 import { v4 as uuidv4 } from "uuid";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { getPublicKeyHex } from "../utils/helpers";

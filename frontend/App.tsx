@@ -1,26 +1,20 @@
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 // Internal Components
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Header } from "@/components/Header";
-import { WalletDetails } from "@/components/WalletDetails";
-import { NetworkInfo } from "@/components/NetworkInfo";
-import { AccountInfo } from "@/components/AccountInfo";
 import { TopBanner } from "@/components/TopBanner";
 import { useContextTemplate } from "./context/ContextTemplate";
-import { QRCode } from "./components/QRCode";
-import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import { bytesToHex, utf8ToBytes } from "@noble/hashes/utils";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
-  const { connected, signMessage, account } = useWallet();
+  const { connected, account } = useWallet();
   const {
     metaViewPublicKey,
     metaViewPrivateKey,
     metaSpendPublicKey,
-    metaSpendPrivateKey,
     setKeys,
     setUsername,
     username,
