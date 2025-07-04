@@ -1,5 +1,6 @@
+import { ReceiveDialog } from "@/components/ReceiveDialog";
 import { SendDialog } from "@/components/SendDialog";
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { wallets } from "@/mock";
 import { Star } from "lucide-react";
@@ -38,17 +39,22 @@ export const WalletPage = () => {
 				))}
 			</div>
 			<div className="w-2/3 flex gap-10">
-				<AlertDialog>
-					<AlertDialogTrigger asChild>
+				<Dialog>
+					<DialogTrigger asChild>
 						<Button className="flex-1 bg-[#38D1BD] text-black text-2xl font-bold rounded-xl hover:bg-[#38D1BD80]">
 							Send
 						</Button>
-					</AlertDialogTrigger>
+					</DialogTrigger>
 					<SendDialog />
-				</AlertDialog>
-				<Button className="flex-1 bg-[#F8C265] text-black text-2xl font-bold rounded-xl hover:bg-[#F8C26580]">
-					Receive
-				</Button>
+				</Dialog>
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button className="flex-1 bg-[#F8C265] text-black text-2xl font-bold rounded-xl hover:bg-[#F8C26580]">
+							Receive
+						</Button>
+					</DialogTrigger>
+					<ReceiveDialog />
+				</Dialog>
 			</div>
 		</main>
 	);

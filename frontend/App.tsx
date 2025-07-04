@@ -16,7 +16,11 @@ function App() {
 		<>
 			{/* <Header /> */}
 			<div className="relative bg-[#1F2427] w-full h-screen pt-10">
-				{connected ? (
+				{isLoading ? (
+					<div className="flex items-center justify-center h-full">
+						<div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
+					</div>
+				) : connected ? (
 					<>
 						<img
 							src={background}
