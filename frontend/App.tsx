@@ -1,148 +1,109 @@
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
-// Internal Components
-import { Card, CardContent } from "@/components/ui/card";
-import { Header } from "@/components/Header";
-import { TopBanner } from "@/components/TopBanner";
-import { useContextTemplate } from "./context/ContextTemplate";
-import { useEffect, useState } from "react";
-import { bytesToHex, utf8ToBytes } from "@noble/hashes/utils";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { MoveRight } from "lucide-react";
+import background from "@/assets/image.svg";
+import aptos from "@/assets/aptos.png";
 
 function App() {
-  const { connected, account } = useWallet();
-  const {
-    metaViewPublicKey,
-    metaViewPrivateKey,
-    metaSpendPublicKey,
-    setKeys,
-    setUsername,
-    username,
-    setUsernameByPublicKey,
-    firstTimeSignature,
-    firstTimeMessage,
-    firstTimeSignMessage,
-  } = useContextTemplate();
+	return (
+		<>
+			{/* <TopBanner /> */}
+			{/* <Header /> */}
+			<div className="relative flex justify-center min-h-screen bg-black overflow-hidden">
+				<img
+					src={background}
+					alt="background"
+					className="min-w-full min-h-screen max-h-screen absolute top-0 left-0 bg-transparent p-4 z-1"
+				/>
+				<img
+					src={aptos}
+					alt="Aptos Coin"
+					className="absolute z-20 left-1/2 -translate-x-1/2 bottom-4 animate-bounce-subtle"
+				/>
+				<div className="relative flex flex-col items-center text-white text-center z-10 h-full mt-10">
+					<h2 className="text-4xl font-bold mb-4">
+						<span className="text-gradient">Privacy Payment</span> in crypto
+					</h2>
+					<h2 className="text-6xl font-bold">
+						<span className="text-gradient">Stealth Address</span> &{" "}
+						<span className="text-gradient">Bank</span>
+					</h2>
+					<h1 className="text-[256px] font-bold text-gradient tracking-widest -mt-10">
+						PAYTOS
+					</h1>
+				</div>
+				<Link to="/wallet" className="z-50">
+					<Button className="absolute bottom-5 z-50 left-1/2 -translate-x-1/2 flex items-center gap-2 text-black bg-white text-3xl font-bold p-8 rounded-full hover:bg-white/80">
+						Explore now
+						<MoveRight className="w-10 h-10" />
+					</Button>
+				</Link>
+			</div>
+			{/* <div className="flex items-center justify-center flex-col">
+				{connected ? (
+					<>
+						{!firstTimeMessage ? (
+							<Card>
+								<CardContent>
+									<p>
+										Whenever you reload the page, you need to sign a message to
+										generate keys to authenticate with backend. This step will
+										be removed in the future with zk proofs.
+									</p>
+									<button onClick={handleFirstTimeSignMessage}>
+										Sign Message to generate keys
+									</button>
+								</CardContent>
+							</Card>
+						) : (
+							<Card>
+								<CardContent className="flex flex-col gap-10 pt-6">
+									{metaSpendPublicKey ? (
+										<>
+											{username ? (
 
-  const [usernameInput, setUsernameInput] = useState("");
-
-  useEffect(() => {
-    if (connected && account && firstTimeSignature && firstTimeMessage) {
-      setUsernameByPublicKey();
-    }
-  }, [connected, account, firstTimeSignature, firstTimeMessage]);
-
-  const handleSetUsername = async () => {
-    if (!usernameInput || !metaSpendPublicKey || !firstTimeSignature || !firstTimeMessage) {
-      return;
-    }
-    console.log("usernameInput", usernameInput);
-    console.log("metaSpendPublicKey", metaSpendPublicKey);
-    console.log("firstTimeSignature", firstTimeSignature);
-    console.log("firstTimeMessage", firstTimeMessage);
-    console.log(
-      "body",
-      JSON.stringify({
-        username: usernameInput,
-        sendPublicKey: metaSpendPublicKey,
-        publicKeyHex: account?.publicKey.toString(),
-        signatureHex: firstTimeSignature,
-        messageHex: bytesToHex(utf8ToBytes(firstTimeMessage)),
-      }),
-    );
-    try {
-      const res = await fetch(`${API_URL}/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: usernameInput,
-          sendPublicKey: metaSpendPublicKey,
-          publicKeyHex: account?.publicKey.toString(),
-          signatureHex: firstTimeSignature,
-          messageHex: bytesToHex(utf8ToBytes(firstTimeMessage)),
-          viewPublicKey: metaViewPublicKey,
-          viewPrivateKey: metaViewPrivateKey,
-        }),
-      });
-      const data = await res.json();
-      console.log(data);
-      setUsername(usernameInput);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleFirstTimeSignMessage = async () => {
-    await firstTimeSignMessage();
-  };
-
-  const handleSetKeys = async () => {
-    await setKeys();
-  };
-
-  return (
-    <>
-      <TopBanner />
-      <Header />
-      <div className="flex items-center justify-center flex-col">
-        {connected ? (
-          <>
-            {!firstTimeMessage ? (
-              <Card>
-                <CardContent>
-                  <p>
-                    Whenever you reload the page, you need to sign a message to generate keys to authenticate with
-                    backend. This step will be removed in the future with zk proofs.
-                  </p>
-                  <button onClick={handleFirstTimeSignMessage}>Sign Message to generate keys</button>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardContent className="flex flex-col gap-10 pt-6">
-                  {metaSpendPublicKey ? (
-                    <>
-                      {username ? (
-                        <p>Welcome {username}</p>
-                      ) : (
-                        <div>
-                          <p>Please choose a username</p>
-                          <input
-                            type="text"
-                            placeholder="Username"
-                            onChange={(e) => setUsernameInput(e.target.value)}
-                            value={usernameInput || ""}
-                          />
-                          <button onClick={handleSetUsername}>Set Username</button>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <p>No Send Public Key</p>
-                      <p>
-                        Because it's first time you join. Sign a message to generate a view & send public key. This will
-                        be stored in local storage. You can recover it any time.
-                      </p>
-                      <button onClick={handleSetKeys}>Sign Message to generate keys</button>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-          </>
-        ) : (
-          <Card>
-            <CardContent>
-              <p>No connected wallet</p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-    </>
-  );
+											) : (
+												<div>
+													<p>Please choose a username</p>
+													<input
+														type="text"
+														placeholder="Username"
+														onChange={(e) => setUsernameInput(e.target.value)}
+														value={usernameInput || ""}
+													/>
+													<button onClick={handleSetUsername}>
+														Set Username
+													</button>
+												</div>
+											)}
+										</>
+									) : (
+										<>
+											<p>No Send Public Key</p>
+											<p>
+												Because it's first time you join. Sign a message to
+												generate a view & send public key. This will be stored
+												in local storage. You can recover it any time.
+											</p>
+											<button onClick={handleSetKeys}>
+												Sign Message to generate keys
+											</button>
+										</>
+									)}
+								</CardContent>
+							</Card>
+						)}
+					</>
+				) : (
+					<Card>
+						<CardContent>
+							<p>No connected wallet</p>
+						</CardContent>
+					</Card>
+				)}
+			</div> */}
+		</>
+	);
 }
 
 export default App;
