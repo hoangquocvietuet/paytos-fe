@@ -4,7 +4,6 @@ import {
   AboutAptosConnectEducationScreen,
   AdapterWallet,
   AdapterNotDetectedWallet,
-  AptosPrivacyPolicy,
   WalletItem,
   groupAndSortWallets,
   isAptosConnectWallet,
@@ -26,7 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 
-export function WalletSelector() {
+export function WalletSelector({ className }: { className?: string }) {
   const { account, connected, disconnect, wallet } = useWallet();
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -73,7 +72,7 @@ export function WalletSelector() {
     </DropdownMenu>
   ) : (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className={className}>
         <Button>Connect a Wallet</Button>
       </DialogTrigger>
       <ConnectWalletDialog close={closeDialog} />
@@ -96,14 +95,7 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
       <AboutAptosConnect renderEducationScreen={renderEducationScreen}>
         <DialogHeader>
           <DialogTitle className="flex flex-col text-center leading-snug">
-            {hasAptosConnectWallets ? (
-              <>
-                <span>Log in or sign up</span>
-                <span>with Social + Aptos Connect</span>
-              </>
-            ) : (
-              "Connect Wallet"
-            )}
+            <h2 className="text-3xl tracking-wide">Login now!</h2>
           </DialogTitle>
         </DialogHeader>
 
@@ -112,25 +104,13 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
             {aptosConnectWallets.map((wallet) => (
               <AptosConnectWalletRow key={wallet.name} wallet={wallet} onConnect={close} />
             ))}
-            <p className="flex gap-1 justify-center items-center text-muted-foreground text-sm">
-              Learn more about{" "}
-              <AboutAptosConnect.Trigger className="flex gap-1 py-3 items-center text-foreground">
-                Aptos Connect <ArrowRight size={16} />
-              </AboutAptosConnect.Trigger>
-            </p>
-            <AptosPrivacyPolicy className="flex flex-col items-center py-1">
-              <p className="text-xs leading-5">
-                <AptosPrivacyPolicy.Disclaimer />{" "}
-                <AptosPrivacyPolicy.Link className="text-muted-foreground underline underline-offset-4" />
-                <span className="text-muted-foreground">.</span>
-              </p>
-              <AptosPrivacyPolicy.PoweredBy className="flex gap-1.5 items-center text-xs leading-5 text-muted-foreground" />
-            </AptosPrivacyPolicy>
-            <div className="flex items-center gap-3 pt-4 text-muted-foreground">
-              <div className="h-px w-full bg-secondary" />
-              Or
-              <div className="h-px w-full bg-secondary" />
-            </div>
+            {availableWallets.length > 0 && (
+              <div className="flex items-center gap-3 pt-4 text-muted-foreground">
+                <div className="h-px w-full bg-secondary" />
+                Or
+                <div className="h-px w-full bg-secondary" />
+              </div>
+            )}
           </div>
         )}
 
@@ -191,9 +171,9 @@ function AptosConnectWalletRow({ wallet, onConnect }: WalletRowProps) {
   return (
     <WalletItem wallet={wallet} onConnect={onConnect}>
       <WalletItem.ConnectButton asChild>
-        <Button size="lg" variant="outline" className="w-full gap-4">
+        <Button size="lg" variant="outline" className="w-full gap-4 text-black rounded-full">
           <WalletItem.Icon className="h-5 w-5" />
-          <WalletItem.Name className="text-base font-normal" />
+          <WalletItem.Name className="text-2xl font-normal" />
         </Button>
       </WalletItem.ConnectButton>
     </WalletItem>
