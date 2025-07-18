@@ -144,13 +144,13 @@ export const WalletPage = () => {
     </main>
   ) : (
     <main className="max-w-screen-xl mx-auto flex flex-col items-center justify-center text-white gap-6 min-h-[60vh]">
-      {/* Bước 1: Nhập username nếu chưa có */}
+      {/* Step 1: Enter username if not set */}
       {!username ? (
         <div className="flex flex-col items-center gap-4 w-full xl:w-2/3">
-          <h2 className="text-3xl font-bold text-[#F8C265] mb-2">Nhập tên người dùng</h2>
+          <h2 className="text-3xl font-bold text-[#F8C265] mb-2">Enter username</h2>
           <input
             className="w-full px-4 py-2 rounded text-black text-xl border border-[#38D1BD] focus:outline-none"
-            placeholder="Nhập username..."
+            placeholder="Enter username..."
             value={usernameInput}
             onChange={(e) => setUsernameInput(e.target.value)}
           />
@@ -158,32 +158,32 @@ export const WalletPage = () => {
             className="w-full py-3 bg-gradient-to-r from-[#F8C265] to-[#38D1BD] text-black text-xl font-bold rounded-full hover:opacity-80 shadow-lg border-none"
             onClick={handleSetUsername}
           >
-            Lưu username
+            Save username
           </Button>
         </div>
       ) : !metaSpendPublicKey || !metaViewPublicKey ? (
-        // Bước 2: Tạo spending/view key nếu chưa có
+        // Step 2: Create spending/view key if not set
         <div className="flex flex-col items-center gap-4 w-full xl:w-2/3">
           <span className="text-6xl mb-2">🔑</span>
-          <h2 className="text-3xl font-bold text-[#F8C265] mb-2">Tạo khóa ví Stealth</h2>
+          <h2 className="text-3xl font-bold text-[#F8C265] mb-2">Create Stealth wallet keys</h2>
           <span className="text-lg bg-black bg-opacity-30 px-4 py-2 rounded text-white border border-[#38D1BD] font-semibold w-full">
-            Bạn cần ký để tạo khóa spending/view cho ví Stealth. Khóa này sẽ được lưu local.
+            You need to sign to create spending/view keys for Stealth wallet. These keys will be saved locally.
           </span>
           <Button
             className="w-full py-3 bg-gradient-to-r from-[#F8C265] to-[#38D1BD] text-black text-xl font-bold rounded-full hover:opacity-80 shadow-lg border-none"
             onClick={handleSetKeys}
           >
-            Ký để tạo khóa
+            Sign to create keys
           </Button>
         </div>
       ) : !firstTimeSignature ? (
-        // Bước 3: Ký xác thực với backend nếu chưa ký
+        // Step 3: Sign authentication with backend if not signed
         <div className="flex flex-col items-center gap-4 w-full xl:w-2/3">
           <span className="text-6xl mb-2">🖊️</span>
           <h2 className="text-3xl font-bold text-[#F8C265] mb-2">Please sign here</h2>
           <span className="text-lg bg-black bg-opacity-30 px-4 py-2 rounded text-white border border-[#38D1BD] font-semibold w-full">
-            Bạn cần ký message để xác thực ví với backend. Bước này sẽ được bỏ trong tương lai với zk-proofs/privy
-            wallets.
+            You need to sign message to authenticate wallet with backend. This step will be removed in the future with
+            zk-proofs/privy wallets.
           </span>
           <Button
             className="w-full py-3 bg-gradient-to-r from-[#F8C265] to-[#38D1BD] text-black text-xl font-bold rounded-full hover:opacity-80 shadow-lg border-none"
@@ -193,9 +193,9 @@ export const WalletPage = () => {
           </Button>
         </div>
       ) : (
-        // Đã hoàn thành các bước
+        // Completed all steps
         <div className="flex flex-col items-center gap-4 w-full xl:w-2/3">
-          <h2 className="text-3xl font-bold text-[#38D1BD] mb-2">Bạn đã hoàn tất xác thực ví!</h2>
+          <h2 className="text-3xl font-bold text-[#38D1BD] mb-2">You have completed wallet authentication!</h2>
         </div>
       )}
     </main>

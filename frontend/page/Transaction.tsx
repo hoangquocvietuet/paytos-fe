@@ -41,11 +41,11 @@ export const TransactionPage = () => {
               )}
               <div className="w-full">
                 <div className="flex items-center text-xl xl:text-3xl">
-                  <p>{transaction.type ? "Sent" : "Received"}</p>
+                  <p>{transaction.direction === "IN" ? "Received" : "Sent"}</p>
                 </div>
                 <div className="flex justify-between text-md xl:text-xl font-['Prototype']">
                   <p>{transaction.address}</p>
-                  <p className="text-[#F8C265]">{transaction.amount} USDC</p>
+                  <p className="text-[#F8C265]">{parseInt(transaction.amount) / 1000000} USDC</p>
                 </div>
               </div>
             </div>

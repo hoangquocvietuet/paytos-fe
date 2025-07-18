@@ -8,7 +8,7 @@ import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { getPublicKeyHex } from "../utils/helpers";
 import { Aptos, Network } from "@aptos-labs/ts-sdk";
 
-// Đổi tên Context này cho phù hợp với mục đích sử dụng
+// Rename this Context to fit the purpose
 const ContextTemplateContext = createContext<ContextTemplateContextType | undefined>(undefined);
 
 interface ContextTemplateContextType {
@@ -35,11 +35,11 @@ const API_URL = import.meta.env.VITE_API_URL;
 const aptosConfig = new AptosConfig({ network: Network.TESTNET });
 const aptos = new Aptos(aptosConfig);
 
-// Đổi tên Provider này cho phù hợp với mục đích sử dụng
+// Rename this Provider to fit the purpose
 export const ContextTemplateProvider = ({ children }: ContextTemplateProviderProps) => {
   const { account, signMessage } = useWallet();
 
-  // Thêm state và logic ở đây
+  // Add state and logic here
   const [metaViewPublicKey, setMetaViewPublicKey] = useState<string | null>(null);
   const [metaViewPrivateKey, setMetaViewPrivateKey] = useState<string | null>(null);
   const [metaSpendPrivateKey, setMetaSpendPrivateKey] = useState<string | null>(null);
@@ -81,7 +81,7 @@ export const ContextTemplateProvider = ({ children }: ContextTemplateProviderPro
           text: metaViewPrivateKeyHex,
         }),
       });
-      // 2. Kiểm tra response status trước khi parse JSON
+      // 2. Check response status before parsing JSON
       if (!res1.ok) {
         const errorText = await res1.text();
         console.error("Encryption API Error:", errorText);
@@ -230,7 +230,7 @@ export const ContextTemplateProvider = ({ children }: ContextTemplateProviderPro
     }
   };
 
-  // Giá trị context cung cấp
+  // Context value provided
   const value: ContextTemplateContextType = {
     metaViewPublicKey,
     metaViewPrivateKey,
@@ -250,11 +250,11 @@ export const ContextTemplateProvider = ({ children }: ContextTemplateProviderPro
   return <ContextTemplateContext.Provider value={value}>{children}</ContextTemplateContext.Provider>;
 };
 
-// Đổi tên hook này cho phù hợp với mục đích sử dụng
+// Rename this hook to fit the purpose
 export const useContextTemplate = () => {
   const context = useContext(ContextTemplateContext);
   if (context === undefined) {
-    throw new Error("useContextTemplate phải được dùng bên trong ContextTemplateProvider");
+    throw new Error("useContextTemplate must be used within ContextTemplateProvider");
   }
   return context;
 };
