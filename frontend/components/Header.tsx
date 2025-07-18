@@ -1,4 +1,3 @@
-import { WalletSelector } from "./WalletSelector";
 import logo from "../assets/logo.svg";
 import { Link, NavLink } from "react-router-dom";
 import { ArrowLeftRight, Wallet } from "lucide-react";
@@ -29,7 +28,6 @@ export function Header() {
         <div className="flex gap-2 items-center">
           <Wallet />
           <h3>{beautifyAddress(account?.address.toString() || "")}</h3>
-          {/* <WalletSelector /> */}
         </div>
       </div>
 

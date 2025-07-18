@@ -1,18 +1,19 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { transactions } from "@/mock";
 import { CircleArrowUp } from "lucide-react";
 import { useState } from "react";
+import { useContextTemplate } from "@/context/ContextTemplate";
 
 export const TransactionPage = () => {
-  const [filteredTransactions, setFilteredTransactions] = useState(transactions);
+  const { stealthWallets } = useContextTemplate();
+  const [filteredTransactions, setFilteredTransactions] = useState<any[]>(stealthWallets);
 
-  const filter = (type: number) => {
-    if (type === -1) {
-      setFilteredTransactions(transactions);
+  const filter = (type: string) => {
+    if (type === "ALL") {
+      setFilteredTransactions(stealthWallets);
       return;
     }
 
-    const filtered = transactions.filter((transaction) => transaction.type === type);
+    const filtered = stealthWallets.filter((transaction) => transaction.direction === type);
     setFilteredTransactions(filtered);
   };
 
@@ -20,14 +21,14 @@ export const TransactionPage = () => {
     <main className="flex w-full max-w-screen-xl mx-auto flex-col gap-6">
       <Tabs defaultValue="all" className="px-2 xl:px-0">
         <TabsList className="grid w-full grid-cols-3 bg-[#000000] mb-10">
-          <TabsTrigger value="all" onClick={() => filter(-1)}>
+          <TabsTrigger value="all" onClick={() => filter("ALL")}>
             All
           </TabsTrigger>
-          <TabsTrigger value="in" onClick={() => filter(0)}>
-            In
+          <TabsTrigger value="in" onClick={() => filter("IN")}>
+            Received
           </TabsTrigger>
-          <TabsTrigger value="out" onClick={() => filter(1)}>
-            Out
+          <TabsTrigger value="out" onClick={() => filter("OUT")}>
+            Sent
           </TabsTrigger>
         </TabsList>
         <section className="text-white flex flex-col gap-4">

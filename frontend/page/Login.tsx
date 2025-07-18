@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
   const nav = useNavigate();
-  const { connected, account, isLoading, wallets = [] } = useWallet();
-  const { aptosConnectWallets: wallet, availableWallets, installableWallets } = groupAndSortWallets(wallets);
+  const { connected, isLoading, wallets = [] } = useWallet();
+  const { aptosConnectWallets: wallet } = groupAndSortWallets(wallets);
 
   useEffect(() => {
     if (connected) {

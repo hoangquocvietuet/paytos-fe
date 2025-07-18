@@ -4,7 +4,7 @@ version = "1.0.0"
 authors = []
 
 [addresses]
-paytos = "0x0"
+paytos = "0xb6b406e564795b8f58ba42dd79c81a3c17e906f37638c4f83bda7d846c675ec7"
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-framework.git", rev = "mainnet", subdir = "aptos-framework" }
